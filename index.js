@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const apiKeys = require("./apiKeys.json");
+const API_KEY = process.env.API_KEY;
 const { getRoyalties } = require("./utils/getRoyaltyResults");
 const PORT = process.env.PORT;
 const app = express();
@@ -24,7 +24,7 @@ const corsOpts = {
 app.use(cors(corsOpts));
 
 const accessGranted = (req, res, next) => {
-  if (!apiKeys.includes(req.query.key)) {
+  if (API_KEY === req.query.key) {
     return res.status(401).json("Access Denied.");
   } else next();
 };
