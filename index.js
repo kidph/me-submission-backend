@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const API_KEY = process.env.API_KEY;
-const { getRoyalties } = require("./utils/getRoyaltyResults");
+
 const PORT = process.env.PORT;
 const app = express();
 const hashlist = require("./hashlist.json");
