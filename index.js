@@ -9,8 +9,10 @@ const bodyParser = require("body-parser");
 const { breakNft } = require("./utils/breakNft");
 const { restoreNft } = require("./utils/restoreNft");
 const { update } = require("./utils/updateDb");
+const { checkSubscription } = require("./utils/checkSubscription");
 const HELIUS = process.env.HELIUS_KEY;
 const axios = require("axios");
+const { refreshSubscription } = require("./utils/removeSubscription");
 
 const corsOpts = {
   origin: ["http://localhost:3000"],
@@ -100,6 +102,23 @@ app.post("/api/helius-hook", async (req, res) => {
     console.log(err);
   }
 });
+
+app.get("/api/refreshSubscription", accessGranted, async (req, res) => {
+  let mint = req.query.mint;
+  let tx = req.query.tx;
+
+  const result = await refreshSubscription(mint, tx);
+
+  if (result === "error") {
+    res.status(200).json("error");
+  } else {
+    res.status(200).json(result);
+  }
+});
+
+setInterval(() => {
+  checkSubscription();
+}, 1000 * 60 * 60 * 4);
 app.listen(
   PORT,
   () => console.log("Server Live on Port: " + PORT) /* , "0.0.0.0" */
