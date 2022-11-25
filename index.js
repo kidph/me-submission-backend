@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const API_KEY = process.env.API_KEY;
-
 const PORT = process.env.PORT;
 const app = express();
 const hashlist = require("./hashlist.json");
@@ -22,9 +21,10 @@ const corsOpts = {
 };
 
 app.use(cors(corsOpts));
+console.log(API_KEY);
 
 const accessGranted = (req, res, next) => {
-  if (API_KEY === req.query.key) {
+  if (API_KEY !== req.query.key) {
     return res.status(401).json("Access Denied.");
   } else next();
 };
@@ -32,7 +32,7 @@ const accessGranted = (req, res, next) => {
 app.use(bodyParser.json());
 
 //Base Route
-app.post("/", accessGranted, (req, res) => {
+app.get("/", accessGranted, (req, res) => {
   res.status(200).json("Welcome To Corn Pop's Stuf boiiiii");
 });
 
