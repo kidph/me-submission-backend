@@ -13,6 +13,7 @@ const { checkSubscription } = require("./utils/checkSubscription");
 const HELIUS = process.env.HELIUS_KEY;
 const axios = require("axios");
 const { refreshSubscription } = require("./utils/removeSubscription");
+const { restoreNftSubscription } = require("./utils/restoreNftSubscription");
 
 const corsOpts = {
   origin: ["http://localhost:3000"],
@@ -108,8 +109,9 @@ app.get("/api/refreshSubscription", accessGranted, async (req, res) => {
   let tx = req.query.tx;
 
   const result = await refreshSubscription(mint, tx);
+  const updateResult = await restoreNftSubscription(mint);
 
-  if (result === "error") {
+  if (result === "error" || updateResult === "error") {
     res.status(200).json("error");
   } else {
     res.status(200).json(result);

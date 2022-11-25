@@ -4,6 +4,7 @@ const userName = process.env.MONGO_DB_USERNAME;
 const pass = process.env.MONGO_DB_PASSWORD;
 const mongoPath = `mongodb+srv://${userName}:${pass}@cluster0.795zabb.mongodb.net/engagement-tracking`;
 const subscriptionModel = require("../schemas/subscriptionSchema");
+const { breakNftSubscription } = require("./breakNftSubscription");
 mongoose.connect(mongoPath);
 
 async function checkSubscripton() {
@@ -21,6 +22,10 @@ async function checkSubscripton() {
           } else {
             console.log("success");
           }
+          async function breakIt() {
+            await breakNftSubscription(mint);
+          }
+          breakIt();
         });
       } else {
         return "subscription active";
