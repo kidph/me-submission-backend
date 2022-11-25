@@ -7,7 +7,7 @@ const subscriptionModel = require("../schemas/subscriptionSchema");
 const { breakNftSubscription } = require("./breakNftSubscription");
 mongoose.connect(mongoPath);
 
-async function checkSubscripton() {
+async function checkSubscription() {
   const currentTime = new Date().getTime();
   try {
     const docs = await subscriptionModel.find({});
