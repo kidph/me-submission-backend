@@ -33,6 +33,7 @@ async function restoreNftSubscription(mint) {
       await metaplex.nfts().update({ nftOrSft: nft, uri: doc.active_metadata });
       const updatedNft = await metaplex.nfts().refresh(nft);
       doc.active = true;
+      doc.subscription_renew = new Date().getTime().toString();
       doc.save();
       return updatedNft;
     }
