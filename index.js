@@ -114,7 +114,7 @@ app.get("/api/refreshSubscription", accessGranted, async (req, res) => {
   if (result === "error" || updateResult === "error") {
     res.status(200).json("error");
   } else {
-    res.status(200).json(result);
+    res.status(200).json("success");
   }
 });
 
