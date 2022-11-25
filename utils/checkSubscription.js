@@ -8,27 +8,28 @@ const { breakNftSubscription } = require("./breakNftSubscription");
 mongoose.connect(mongoPath);
 
 async function checkSubscription() {
+  console.log("running subscription check");
   const currentTime = new Date().getTime();
   try {
     const docs = await subscriptionModel.find({});
-
+    console.log(docs);
     docs.forEach((doc, i) => {
-      if (parseInt(docs.subscription_renew) < currentTime) {
+      if (parseInt(doc.subscription_renew) < currentTime) {
         console.log("payment due");
-        docs.active = false;
-        docs.save(function (err, doc) {
+        doc.active = false;
+        doc.save(function (err, doc) {
           if (err) {
-            return "error";
+            console.log("error");
           } else {
             console.log("success");
           }
           async function breakIt() {
-            await breakNftSubscription(mint);
+            await breakNftSubscription(doc.mint);
           }
           breakIt();
         });
       } else {
-        return "subscription active";
+        console.log("subscription active");
       }
       if (i === docs.length - 1) {
         return "Subscriptions Updated";
@@ -40,4 +41,4 @@ async function checkSubscription() {
   }
 }
 
-module.exports = { checkSubscripton };
+module.exports = { checkSubscription };

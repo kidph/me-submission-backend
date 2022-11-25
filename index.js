@@ -117,7 +117,11 @@ app.get("/api/refreshSubscription", accessGranted, async (req, res) => {
     res.status(200).json(result);
   }
 });
-await checkSubscription();
+
+(async () => {
+  const result = await checkSubscription();
+  console.log(result);
+})();
 setInterval(async () => {
   await checkSubscription();
 }, 1000 * 60 * 60 * 4);
